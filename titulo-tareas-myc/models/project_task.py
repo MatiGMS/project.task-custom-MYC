@@ -11,7 +11,7 @@ class ProjectTask(models.Model):
         # llamamos primero al default_get original
         res = super().default_get(fields_list)
 
-        # si ya viene un name por contexto, no lo pisamos
+        # si ya viene   un name por contexto, no lo pisamos
         if res.get('name'):
             return res
 
