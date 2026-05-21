@@ -18,9 +18,17 @@ class ProjectTask(models.Model):
             return res
 
         partner = self.env['res.partner'].browse(partner_id)
-
         nombre_fantasia = getattr(partner, 'x_studio_nombre_fantasa', False)
         if nombre_fantasia:
             res['name'] = nombre_fantasia
 
         return res
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id_set_name_from_fantasy(self):
+        if (
+            self.partner_id
+            and getattr(self.partner_id, 'x_studio_nombre_fantasa', False)
+            and not (self.name or '').strip()
+        ):
+            self.name = self.partner_id.x_studio_nombre_fantasa
